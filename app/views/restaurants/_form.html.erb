@@ -1,6 +1,7 @@
 <%= simple_form_for @restaurant do |f| %>
     <%= f.input :name %>
     <%= f.input :description %>
-    <%= f.input :contactInfo %>
+    <%= f.input :contactInfo, label: "Contact Info" %>
+    <%= f.input :location %>
     <%= f.button :submit %>
 <% end %>

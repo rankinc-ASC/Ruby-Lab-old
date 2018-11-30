@@ -1,18 +1,29 @@
 class RestaurantsController < ApplicationController
     before_action :find_restaurant, only: [:show, :edit, :update, :destroy]
+    before_action :authenticate_user!, only: [:new, :edit]
+
     def index
-        @restaurants = Restaurant.all.order("created_at DESC")
+        if params[:search]
+            @restaurants = Restaurant.search(params[:search]).order("created_at DESC")
+        else
+            @restaurants = Restaurant.all.order("created_at DESC")
+        end
     end
 
     def show
+        if @restaurant.reviews.blank?
+            @average_review = 0
+        else
+            @average_review = @restaurant.reviews.average(:rating).round(2)
+        end
     end
 
     def new
-        @restaurant = Restaurant.new
+        @restaurant = current_user.restaurants.build
     end
 
     def create
-        @restaurant = Restaurant.new(restaurant_params)
+        @restaurant = current_user.restaurants.build(restaurant_params)
 
         if @restaurant.save
             redirect_to root_path

@@ -1,5 +1,7 @@
-<% @restaurants.each do |restaurant| %>
-    <h2><%= link_to restaurant.name, restaurant_path(restaurant) %></h2>
+<% if @restaurants.present? %>
+    <% @restaurants.each do |restaurant| %>
+        <h2><%= link_to restaurant.name, restaurant_path(restaurant) %></h2>
+    <% end %>
+<% else %>
+    <p>There are no restaurants with the name or location of <%= params[:search] %>.</p>
 <% end %>
-
-<%= link_to "Add Restaurant", new_restaurant_path %>
